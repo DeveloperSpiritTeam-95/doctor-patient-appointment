@@ -5,6 +5,7 @@ import com.start.doctorpatientappointment.doctorappointment.service.DoctorAppoin
 import com.start.doctorpatientappointment.doctorappointment.util.AppointmentLatency;
 import com.start.doctorpatientappointment.doctorappointment.util.CancelAppointment;
 import com.start.doctorpatientappointment.doctorappointment.util.DoctorAppointmentDto;
+import com.start.doctorpatientappointment.enums.AppointmentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +64,11 @@ public class DoctorAppointmentController {
     @GetMapping(value = "/getAppointmentById/{appointmentId}")
     public ResponseEntity<Optional<DoctorAppointment>> getAppointmentById(@PathVariable("appointmentId") String appointmentId){
         return this.service.getAppointmentById(appointmentId);
+    }
+
+    @GetMapping(value = "/getAllAppointmentsByStatus/{status}")
+    public ResponseEntity<List<DoctorAppointment>> getAllAppointmentsByStatus(@PathVariable AppointmentStatus status){
+        return this.service.getAllAppointmentsByStatus(status);
     }
 
 
