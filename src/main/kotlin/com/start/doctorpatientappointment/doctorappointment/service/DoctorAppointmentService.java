@@ -46,6 +46,7 @@ public class DoctorAppointmentService {
             appointment.setCreationDate(LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
             appointment.setAppointmentDate(input.getAppointmentDate());
             appointment.setAppointmentType(AppointmentType.HOME);
+            appointment.setReason(input.getReason());
             appointment.setAppointmentStatus(AppointmentStatus.REQUEST);
             appointment.setCanceled(false);
 
@@ -162,4 +163,11 @@ public class DoctorAppointmentService {
     }
 
 
+    public ResponseEntity<List<DoctorAppointment>> getAllAppointmentsByStatus(AppointmentStatus status) {
+        List<DoctorAppointment> appointments = this.appointmentRepository.findByAppointmentStatus(status);
+        if (appointments.isEmpty())
+            return new ResponseEntity<>(Collections.emptyList(),HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity<>(appointments,HttpStatus.OK);
+    }
 }
