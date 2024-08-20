@@ -1,4 +1,4 @@
-package com.start.doctorpatientappointment.doctorappointment.util;
+package com.start.doctorpatientappointment.appointments.util;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.start.doctorpatientappointment.enums.AppointmentStatus;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DoctorAppointmentDto {
+public class AppointmentDto {
     private String appointmentId;
     private String doctorId;
     private String userId;

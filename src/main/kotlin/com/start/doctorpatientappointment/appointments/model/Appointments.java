@@ -1,4 +1,4 @@
-package com.start.doctorpatientappointment.doctorappointment.model;
+package com.start.doctorpatientappointment.appointments.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.start.doctorpatientappointment.enums.AppointmentStatus;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Document
-public class DoctorAppointment {
+public class Appointments {
 
     @Id
     private String appointmentId;
