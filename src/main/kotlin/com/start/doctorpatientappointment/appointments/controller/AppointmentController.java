@@ -1,10 +1,10 @@
-package com.start.doctorpatientappointment.doctorappointment.controller;
+package com.start.doctorpatientappointment.appointments.controller;
 
-import com.start.doctorpatientappointment.doctorappointment.model.DoctorAppointment;
-import com.start.doctorpatientappointment.doctorappointment.service.DoctorAppointmentService;
-import com.start.doctorpatientappointment.doctorappointment.util.AppointmentLatency;
-import com.start.doctorpatientappointment.doctorappointment.util.CancelAppointment;
-import com.start.doctorpatientappointment.doctorappointment.util.DoctorAppointmentDto;
+import com.start.doctorpatientappointment.appointments.model.Appointments;
+import com.start.doctorpatientappointment.appointments.service.AppointmentsService;
+import com.start.doctorpatientappointment.appointments.util.AppointmentLatency;
+import com.start.doctorpatientappointment.appointments.util.CancelAppointment;
+import com.start.doctorpatientappointment.appointments.util.AppointmentDto;
 import com.start.doctorpatientappointment.enums.AppointmentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +15,19 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/appointments")
-public class DoctorAppointmentController {
+public class AppointmentController {
 
     @Autowired
-    private DoctorAppointmentService service;
+    private AppointmentsService service;
 
 
     @PostMapping(value = "/createAppointment")
-    public ResponseEntity<String> createAppointment(@RequestBody DoctorAppointmentDto input){
+    public ResponseEntity<String> createAppointment(@RequestBody AppointmentDto input){
         return this.service.createAppointment(input);
     }
 
     @PutMapping(value = "/reScheduleAppointment")
-    public ResponseEntity<String> reScheduleAppointment(@RequestBody DoctorAppointmentDto input){
+    public ResponseEntity<String> reScheduleAppointment(@RequestBody AppointmentDto input){
         return this.service.reScheduleAppointment(input);
     }
 
@@ -52,22 +52,22 @@ public class DoctorAppointmentController {
     }
 
     @GetMapping(value = "/getAppointmentsByUser/{userId}")
-    public ResponseEntity<List<DoctorAppointment>> getAppointmentsByUser(@PathVariable("userId") String userId){
+    public ResponseEntity<List<Appointments>> getAppointmentsByUser(@PathVariable("userId") String userId){
         return this.service.getAppointmentsByUser(userId);
     }
 
     @GetMapping(value = "/getAppointmentsByDoctor/{doctorId}")
-    public ResponseEntity<List<DoctorAppointment>> getAppointmentsByDoctor(@PathVariable("doctorId") String doctorId){
+    public ResponseEntity<List<Appointments>> getAppointmentsByDoctor(@PathVariable("doctorId") String doctorId){
         return this.service.getAppointmentsByDoctor(doctorId);
     }
 
     @GetMapping(value = "/getAppointmentById/{appointmentId}")
-    public ResponseEntity<Optional<DoctorAppointment>> getAppointmentById(@PathVariable("appointmentId") String appointmentId){
+    public ResponseEntity<Optional<Appointments>> getAppointmentById(@PathVariable("appointmentId") String appointmentId){
         return this.service.getAppointmentById(appointmentId);
     }
 
     @GetMapping(value = "/getAllAppointmentsByStatus/{status}")
-    public ResponseEntity<List<DoctorAppointment>> getAllAppointmentsByStatus(@PathVariable AppointmentStatus status){
+    public ResponseEntity<List<Appointments>> getAllAppointmentsByStatus(@PathVariable AppointmentStatus status){
         return this.service.getAllAppointmentsByStatus(status);
     }
 

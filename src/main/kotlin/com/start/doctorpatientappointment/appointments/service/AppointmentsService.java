@@ -1,10 +1,10 @@
-package com.start.doctorpatientappointment.doctorappointment.service;
+package com.start.doctorpatientappointment.appointments.service;
 
-import com.start.doctorpatientappointment.doctorappointment.model.DoctorAppointment;
-import com.start.doctorpatientappointment.doctorappointment.repository.DoctorAppointmentRepository;
-import com.start.doctorpatientappointment.doctorappointment.util.AppointmentLatency;
-import com.start.doctorpatientappointment.doctorappointment.util.CancelAppointment;
-import com.start.doctorpatientappointment.doctorappointment.util.DoctorAppointmentDto;
+import com.start.doctorpatientappointment.appointments.model.Appointments;
+import com.start.doctorpatientappointment.appointments.repository.AppointmentsRepository;
+import com.start.doctorpatientappointment.appointments.util.AppointmentLatency;
+import com.start.doctorpatientappointment.appointments.util.CancelAppointment;
+import com.start.doctorpatientappointment.appointments.util.AppointmentDto;
 import com.start.doctorpatientappointment.doctors.model.DoctorState;
 import com.start.doctorpatientappointment.doctors.repository.DoctorStateRepository;
 import com.start.doctorpatientappointment.enums.AppointmentStatus;
@@ -24,10 +24,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class DoctorAppointmentService {
+public class AppointmentsService {
 
     @Autowired
-    private DoctorAppointmentRepository appointmentRepository;
+    private AppointmentsRepository appointmentRepository;
 
     @Autowired
     private DoctorStateRepository doctorStateRepository;
@@ -36,9 +36,9 @@ public class DoctorAppointmentService {
     private UserStateRepository userStateRepository;
 
 
-    public ResponseEntity<String> createAppointment(@NotNull DoctorAppointmentDto input) {
+    public ResponseEntity<String> createAppointment(@NotNull AppointmentDto input) {
         if (this.userStateRepository.findById(input.getUserId()).isPresent()) {
-            DoctorAppointment appointment = new DoctorAppointment();
+            Appointments appointment = new Appointments();
 
             appointment.setAppointmentId(UUID.randomUUID().toString());
             appointment.setUserId(input.getUserId());
@@ -57,8 +57,8 @@ public class DoctorAppointmentService {
     }
 
 
-    public ResponseEntity<String> reScheduleAppointment(@NotNull DoctorAppointmentDto input) {
-        Optional<DoctorAppointment> appointment = this.appointmentRepository.findById(input.getAppointmentId());
+    public ResponseEntity<String> reScheduleAppointment(@NotNull AppointmentDto input) {
+        Optional<Appointments> appointment = this.appointmentRepository.findById(input.getAppointmentId());
         if (appointment.isPresent()) {
             appointment.get().setUserId(appointment.get().getUserId());
             appointment.get().setDoctorId(appointment.get().getDoctorId());
@@ -75,7 +75,7 @@ public class DoctorAppointmentService {
     }
 
     public ResponseEntity<String> acceptAppointmentByDoctor(@NotNull AppointmentLatency input) {
-        Optional<DoctorAppointment> appointment = this.appointmentRepository.findById(input.getAppointmentId());
+        Optional<Appointments> appointment = this.appointmentRepository.findById(input.getAppointmentId());
         Optional<DoctorState> doctor = this.doctorStateRepository.findById(input.getDoctorId());
         if (appointment.isPresent()) {
             if (doctor.isPresent()) {
@@ -93,7 +93,7 @@ public class DoctorAppointmentService {
 
 
     public ResponseEntity<String> completeAppointmentByDoctor(@NotNull AppointmentLatency input) {
-        Optional<DoctorAppointment> appointment = this.appointmentRepository.findById(input.getAppointmentId());
+        Optional<Appointments> appointment = this.appointmentRepository.findById(input.getAppointmentId());
         if (appointment.isPresent() && appointment.get().getUserId() != null) {
             if (appointment.get().getAppointmentStatus() == AppointmentStatus.ACCEPTED) {
 
@@ -108,7 +108,7 @@ public class DoctorAppointmentService {
     }
 
     public ResponseEntity<String> cancelAppointmentByDoctor(@NotNull CancelAppointment input) {
-        Optional<DoctorAppointment> appointment = this.appointmentRepository.findById(input.getAppointmentId());
+        Optional<Appointments> appointment = this.appointmentRepository.findById(input.getAppointmentId());
         if (appointment.isPresent()) {
             if (appointment.get().getAppointmentStatus() == AppointmentStatus.ACCEPTED) {
 
@@ -125,7 +125,7 @@ public class DoctorAppointmentService {
 
 
     public ResponseEntity<String> cancelAppointmentByUser(@NotNull CancelAppointment input) {
-        Optional<DoctorAppointment> appointment = this.appointmentRepository.findById(input.getAppointmentId());
+        Optional<Appointments> appointment = this.appointmentRepository.findById(input.getAppointmentId());
         if (appointment.isPresent()) {
             appointment.get().setReason(input.getReason());
             appointment.get().setAppointmentStatus(AppointmentStatus.CANCELED);
@@ -137,25 +137,25 @@ public class DoctorAppointmentService {
     }
 
 
-    public ResponseEntity<List<DoctorAppointment>> getAppointmentsByUser(String userId) {
+    public ResponseEntity<List<Appointments>> getAppointmentsByUser(String userId) {
 
-        List<DoctorAppointment> appointments = this.appointmentRepository.findByUserId(userId);
+        List<Appointments> appointments = this.appointmentRepository.findByUserId(userId);
         if (appointments.isEmpty())
             return new ResponseEntity<>(Collections.emptyList(),HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<>(appointments,HttpStatus.OK);
     }
 
-    public ResponseEntity<List<DoctorAppointment>> getAppointmentsByDoctor(String doctorId) {
-        List<DoctorAppointment> appointments = this.appointmentRepository.findByDoctorId(doctorId);
+    public ResponseEntity<List<Appointments>> getAppointmentsByDoctor(String doctorId) {
+        List<Appointments> appointments = this.appointmentRepository.findByDoctorId(doctorId);
         if (appointments.isEmpty())
             return new ResponseEntity<>(Collections.emptyList(),HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<>(appointments,HttpStatus.OK);
     }
 
-    public ResponseEntity<Optional<DoctorAppointment>> getAppointmentById(String appointmentId) {
-        Optional<DoctorAppointment> appointment = this.appointmentRepository.findById(appointmentId);
+    public ResponseEntity<Optional<Appointments>> getAppointmentById(String appointmentId) {
+        Optional<Appointments> appointment = this.appointmentRepository.findById(appointmentId);
         if (appointment.isPresent())
             return new ResponseEntity<>(appointment,HttpStatus.OK);
         else
@@ -163,8 +163,8 @@ public class DoctorAppointmentService {
     }
 
 
-    public ResponseEntity<List<DoctorAppointment>> getAllAppointmentsByStatus(AppointmentStatus status) {
-        List<DoctorAppointment> appointments = this.appointmentRepository.findByAppointmentStatus(status);
+    public ResponseEntity<List<Appointments>> getAllAppointmentsByStatus(AppointmentStatus status) {
+        List<Appointments> appointments = this.appointmentRepository.findByAppointmentStatus(status);
         if (appointments.isEmpty())
             return new ResponseEntity<>(Collections.emptyList(),HttpStatus.NO_CONTENT);
         else

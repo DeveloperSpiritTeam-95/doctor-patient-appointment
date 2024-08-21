@@ -1,4 +1,4 @@
-package com.start.doctorpatientappointment.doctorappointment.util;
+package com.start.doctorpatientappointment.appointments.util;
 
 import lombok.*;
 
